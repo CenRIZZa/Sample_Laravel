@@ -5,20 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
-    <title>Borrowing System</title>
+    <title>Items System</title>
 </head>
 <body class="bg-gray-50 min-h-screen p-4 md:p-8">
     <div class="max-w-7xl mx-auto">
         <div class="flex justify-between items-center mb-6">
             <div>
                 <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Available Items</h2>
-                <p class="mt-1 text-sm text-gray-600">{{$greeting}}</p>
             </div>
-            <a href="#" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md shadow-sm">
+            <a href="{{route ('items.create')}}" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md shadow-sm">
                 Add New Item
             </a>
         </div>
-        
+        @if (session('success'))
+        <div id="success-message" class="mb-4 transition-opacity duration-500 ease-in-out opacity-100">
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">Success!</strong>
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+        </div>
+    @endif
         <div class="bg-white rounded-lg shadow-md overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
@@ -50,8 +56,8 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <button class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
-                                <button class="text-red-600 hover:text-red-900">Delete</button>
+                                <a href="{{route ('items.edit', ['item' => $item])}}" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                                
                             </td>
                         </tr>
                         @endforeach
@@ -61,4 +67,15 @@
         </div>
     </div>
 </body>
+<script>
+    // Auto-hide success message after 6 seconds
+    setTimeout(function() {
+        var successMessage = document.getElementById('success-message');
+        if (successMessage) {
+            successMessage.style.display = 'none';
+            successMessage.eastIn = 'opacity 0.5s ease-in-out';
+            successMessage.style.opacity = 0;
+        }
+    }, 6000);
+</script>
 </html>
