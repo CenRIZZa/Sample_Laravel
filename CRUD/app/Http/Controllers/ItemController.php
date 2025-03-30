@@ -35,8 +35,11 @@ class ItemController extends Controller
                 ->withErrors(['error' => 'Failed to update item: ' . $e->getMessage()]);
         }
     }
-    public function delete(){
-        return view('items.delete');
+    public function delete(items $item){
+        $item->delete();
+
+
+        return redirect()->route('items.index')->with('success', 'Item deleted successfully.');
     }
     public function store(Request $request){
 
