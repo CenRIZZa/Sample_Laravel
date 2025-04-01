@@ -1,18 +1,25 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite('resources/css/app.css')
-    <title>Create New Item</title>
-</head>
-<body class="bg-gray-50 min-h-screen p-4 md:p-8">
-    <br>
-    <br>
+<div>
     <div class="max-w-5xl mx-auto"> 
+        @if ($errors->any())
+            <div id="error-message" class="mb-4">
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Error!</strong>
+                    <span class="block sm:inline">{{ $errors->first('error') }}</span>
+                </div>
+            </div>
+        @endif
+
+        @if (session()->has('success'))
+            <div id="success-message" class="mb-4">
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                    <strong class="font-bold">Success!</strong>
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+            </div>
+        @endif
 
         
-        
+
 
         <div class="mb-8"> 
             <h2 class="text-3xl font-bold text-gray-900">Create New Item</h2> 
@@ -20,30 +27,30 @@
         </div>
 
         <div class="bg-white rounded-lg shadow-md p-8"> 
-            <form action="{{route('items.store')}}" method="POST" class="space-y-8"> 
+            <form wire:submit='submit' action="" method="POST" class="space-y-8"> 
                 @csrf
 
                 <div>
                     <label for="name" class="block text-base font-medium text-gray-700 mb-2">Name</label> 
-                    <input type="text" name="name" id="name" 
+                    <input wire:model='name' type="text" name="name" id="name" 
                            class="mt-1 block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base"> 
                 </div>
 
                 <div>
                     <label for="description" class="block text-base font-medium text-gray-700 mb-2">Description</label>
-                    <textarea name="description" id="description" rows="4"
+                    <textarea wire:model='description' name="description" id="description" rows="4"
                               class="mt-1 block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base"></textarea>
                 </div>
 
                 <div>
                     <label for="quantity" class="block text-base font-medium text-gray-700 mb-2">Quantity</label>
-                    <input type="number" name="quantity" id="quantity" min="0" 
+                    <input wire:model='quantity' type="number" name="quantity" id="quantity" min="0" 
                            class="mt-1 block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base">
                 </div>
 
                 <div>
                     <label for="is_available" class="block text-base font-medium text-gray-700 mb-2">Is Available</label>
-                    <select name="is_available" id="is_available" 
+                    <select wire:model='is_available' name="is_available" id="is_available" 
                             class="mt-1 block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base">
                         <option value="1">Yes</option>
                         <option value="0">No</option>
@@ -67,25 +74,4 @@
             </form>
         </div>
     </div>
-</body>
-
-<script>
-    setTimeout(function() {
-        var errorMessage = document.getElementById('error-message');
-        if (errorMessage) {
-            errorMessage.style.display = 'none'; 
-        }
-    }, 6000); 
-
-
-    document.querySelector('form').addEventListener('submit', function() {
-        const submitBtn = document.getElementById('submit-btn');
-        const btnText = document.getElementById('btn-text');
-        const spinner = document.getElementById('loading-spinner');
-        
-        submitBtn.disabled = true;
-        btnText.textContent = 'Creating...';
-        spinner.classList.remove('hidden');
-    });
-</script>
-</html>
+</div>
