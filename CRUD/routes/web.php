@@ -14,3 +14,13 @@ Route::post('/items', [ItemController::class, 'store'])->name('items.store');
 Route::get('/items/{item}/edit', [ItemController::class, 'edit'])->name('items.edit');
 Route::put('/items/{item}/update', [ItemController::class, 'update'])->name('items.update');
 Route::delete('/items/{item}/delete', [ItemController::class, 'delete'])->name('items.delete');
+
+
+Route::get('add', function () {
+    return view('crud.create');
+})->name('crud.create');
+
+
+Route::get('/view', function () {
+    return view('crud.index');
+})->name('crud.index');
