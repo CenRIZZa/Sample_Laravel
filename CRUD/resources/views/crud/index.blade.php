@@ -11,13 +11,24 @@
     <livewire:item-view/>
 </body>
 <script>
-    // Auto-hide success message after 6 seconds
     setTimeout(function() {
         var successMessage = document.getElementById('success-message');
+        var message = document.getElementById('message');
+        
         if (successMessage) {
-            successMessage.style.display = 'none';
-            successMessage.eastIn = 'opacity 0.5s ease-in-out';
-            successMessage.style.opacity = 0;
+            successMessage.style.transition = 'opacity 0.5s ease-in-out';
+            successMessage.style.opacity = '0';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 500);
+        }
+        
+        if (message) {
+            message.style.transition = 'opacity 0.5s ease-in-out';
+            message.style.opacity = '0';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 500);
         }
     }, 6000);
 </script>

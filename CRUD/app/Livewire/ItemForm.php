@@ -11,9 +11,31 @@ class ItemForm extends Component
     public string $description = '';
     public int $quantity = 1;
     public bool $is_available = true;
+    public $itemId = null;
+    public $isEditing = false;
+    
+
+    public function mount($id = null)
+    {
+        if ($id) {
+            $this->itemId = $id;
+            $this->isEditing = true;
+            $this->loadItem();
+        }
+    }
+
+    public function loadItem()
+    {
+        $item = items::find($this->itemId);
+        if ($item) {
+            $this->name = $item->name;
+            $this->description = $item->description ?? '';
+            $this->quantity = $item->quantity;
+            $this->is_available = $item->is_available;
+        }
+    }
 
     public function submit(){
-        
         try {
             
             $this->validate([
@@ -23,17 +45,30 @@ class ItemForm extends Component
                 'is_available' => 'required|boolean',
             ]); 
 
-            items::create([
-                'name' => $this->name,
-                'description' => $this->description,
-                'quantity' => $this->quantity,
-                'is_available' => $this->is_available
-            ]);
+            if ($this->isEditing) {
+                $item = items::find($this->itemId);
+                $item->update([
+                    'name' => $this->name,
+                    'description' => $this->description,
+                    'quantity' => $this->quantity,
+                    'is_available' => $this->is_available
+                ]);
+                
+                session()->flash('success', 'Item updated successfully!');
+            } else {
+                items::create([
+                    'name' => $this->name,
+                    'description' => $this->description,
+                    'quantity' => $this->quantity,
+                    'is_available' => $this->is_available
+                ]);
+                
+                session()->flash('success', 'Item created successfully!');
+            }
             
-            session()->flash('success', 'Item created successfully!');
-            $this->reset();
-            return;
+            $this->reset(['name', 'description', 'quantity', 'is_available']);
             
+            return redirect()->route('crud.index');
             
         } catch (\Illuminate\Database\QueryException $e) {
             if ($e->getCode() === '23000') {
@@ -47,11 +82,8 @@ class ItemForm extends Component
         }
     }
 
-
-
-    public function render(items $items)
+    public function render()
     {
-        $items = items::all();
-        return view('view');
+        return view('livewire.item-form');
     }
 }

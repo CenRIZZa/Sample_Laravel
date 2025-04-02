@@ -7,6 +7,6 @@
 </head>
 <body>
     <br>
-    <livewire:item-form/>
+    <livewire:login-form/>
 </body>
 </html>
