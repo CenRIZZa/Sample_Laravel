@@ -1,35 +1,40 @@
 <?php
 
 use App\Http\Controllers\ItemController;
+use App\Livewire\AccountRegister;
 use App\Livewire\EditItems;
+use App\Livewire\LoginForm;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB; 
 use App\Livewire\ItemForm;
 use App\Livewire\ItemView;
 
+// Admin auth routes
+// Route::get('/login', LoginForm::class)->name('login');
+
+// Make your welcome page the login route
 Route::get('/', function () {
     return view('welcome');
+})->name('login')->middleware('guest:admin');
+
+// Admin logout route
+Route::post('/logout', function() {
+    Auth::guard('admin')->logout();
+    session()->invalidate();
+    session()->regenerateToken();
+    return redirect()->route('login');
+})->name('admin.logout');
+
+// Protected routes
+Route::middleware(['auth:admin'])->group(function () {
+    Route::get('/form', ItemForm::class)->name('crud.form');
+    Route::get('/fetch', ItemView::class)->name('crud.index');
+    Route::get('/item/edit/{id}', ItemForm::class)->name('crud.edit');
+    Route::get('/register', AccountRegister::class)->name('crud.register');
 });
-
-//Route::get('/items', [ItemController::class, 'index'])->name('items.index');
-//Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
-//Route::post('/items', [ItemController::class, 'store'])->name('items.store');
-//Route::get('/items/{item}/edit', [ItemController::class, 'edit'])->name('items.edit');
-//Route::put('/items/{item}/update', [ItemController::class, 'update'])->name('items.update');
-//Route::delete('/items/{item}/delete', [ItemController::class, 'delete'])->name('items.delete');
-
 
 Route::get('/add', function () {
     return view('crud.create');
 })->name('crud.create');
-
-
-//Route::get('/view', function () {
-    //return view('crud.index');
-//})->name('crud.index');
-
-
-Route::get('/form', ItemForm::class);
-Route::get('/fetch', ItemView::class)->name('crud.index');
-Route::get('/item/edit/{id}', ItemForm::class)->name('crud.edit');
 

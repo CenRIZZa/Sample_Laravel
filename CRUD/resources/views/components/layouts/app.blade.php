@@ -26,6 +26,15 @@
                             </svg>
                             View Items
                         </a>
+                        <form method="POST" action="{{ route('admin.logout') }}">
+                            @csrf
+                            <button type="submit" class="px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-red-600 hover:text-white transition duration-300 ease-in-out flex items-center text-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                                </svg>
+                                Logout
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -45,4 +54,15 @@
             </div>
         </footer>
     </body>
+    <script>
+        // Auto-hide success message after 6 seconds
+        setTimeout(function() {
+            var successMessage = document.getElementById('success-message');
+            if (successMessage) {
+                successMessage.style.display = 'none';
+                successMessage.eastIn = 'opacity 0.5s ease-in-out';
+                successMessage.style.opacity = 0;
+            }
+        }, 6000);
+    </script>
 </html>
