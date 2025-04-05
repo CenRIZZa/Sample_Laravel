@@ -9,11 +9,12 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB; 
 use App\Livewire\ItemForm;
 use App\Livewire\ItemView;
+use Livewire\Volt\Volt;
 
-// Admin auth routes
-// Route::get('/login', LoginForm::class)->name('login');
+Route::get('/home', function () {
+    return view('users');
+});
 
-// Make your welcome page the login route
 Route::get('/', function () {
     return view('welcome');
 })->name('login')->middleware('guest:admin');
@@ -26,7 +27,8 @@ Route::post('/logout', function() {
     return redirect()->route('login');
 })->name('admin.logout');
 
-// Protected routes
+
+
 Route::middleware(['auth:admin'])->group(function () {
     Route::get('/form', ItemForm::class)->name('crud.form');
     Route::get('/fetch', ItemView::class)->name('crud.index');

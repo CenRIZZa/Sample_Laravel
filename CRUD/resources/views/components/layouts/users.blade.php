@@ -54,11 +54,8 @@
                     <x-menu-separator />
                 @endif
                 
-                <x-menu-item title="Items List" icon="o-clipboard-document-list" link="{{ route('crud.index') }}" />
+                <x-menu-item title="Borrow Items" icon="o-clipboard-document-list" link="{{ route('crud.borrow') }}" />
                 
-                <x-menu-item title="Add New Item" icon="o-plus-circle" link="{{ route('crud.form') }}" />
-            
-                <x-menu-item title="Register Admin" icon="o-user-plus" link="{{ route('crud.register') }}" />
                 
                 <x-menu-sub title="Settings" icon="o-cog-6-tooth">
                     <x-menu-item title="Wifi" icon="o-wifi" link="####" />
