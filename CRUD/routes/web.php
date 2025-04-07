@@ -40,3 +40,10 @@ Route::get('/add', function () {
     return view('crud.create');
 })->name('crud.create');
 
+
+
+
+
+Route::get('/borrow/{userId}', function ($userId) {
+    return view('borrow', ['userId' => $userId]);
+})->name('borrow');

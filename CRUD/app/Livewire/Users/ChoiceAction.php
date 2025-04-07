@@ -3,6 +3,8 @@
 namespace App\Livewire\Users;
 
 use Livewire\Component;
+use App\Models\User;
+
 
 class ChoiceAction extends Component
 {
@@ -32,23 +34,25 @@ class ChoiceAction extends Component
             $this->processingMessage = 'Processing RFID: ' . substr($this->BorrowRFID, 0, 3) . '*******';
             
             // Process the RFID
-            $this->processRFID();
+            $this->processRFID($this->BorrowRFID);
         }
     }
     
-    public function processRFID()
+      public function processRFID($rfid)
     {
-        // Here you would implement your RFID processing logic
-        // For example:
-        // 1. Check if RFID exists in database
-        // 2. Process borrowing request
-        // 3. Redirect to success or error page
-        
-        // For now, let's just simulate a processing delay
         $this->processingMessage = 'Validating RFID...';
         
-        // In a real application, you'd want to do this processing in the background
-        // and then update the UI when complete
+        // Find user with matching RFID
+        $user = \App\Models\User::where('RFID', $rfid)->first();
+        
+        if ($user) {
+            $this->processingMessage = 'RFID validated successfully!';
+            return redirect()->route('borrow', ['userId' => $user->id]);
+        } else {
+            $this->processingMessage = 'Invalid RFID. Please try again.';
+            $this->isCapturing = true;
+            $this->BorrowRFID = '';
+        }
     }
 
     public function render()

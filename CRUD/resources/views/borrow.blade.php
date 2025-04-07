@@ -7,7 +7,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-    <livewire:users.choice-action />
+    <livewire:users.borrow-item :userId="$userId"  />
 </body>
-
 </html>

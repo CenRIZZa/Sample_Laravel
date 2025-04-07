@@ -14,4 +14,12 @@ class Items extends Model // Corrected class name casing
         'quantity',
         'is_available',
     ];
+
+    // Add this method inside the Items class
+    public function histories()
+    {
+        return $this->hasMany(\App\Models\ItemHistory::class, 'item_id');
+    }
 }
+
+?>

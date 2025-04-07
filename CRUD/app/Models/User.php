@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'RFID',
     ];
 
     /**
@@ -46,4 +47,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function itemHistories()
+    {
+        return $this->hasMany(\App\Models\ItemHistory::class);
+    }
 }
+
+?>

@@ -1,15 +1,6 @@
 <div class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-indigo-100 p-8 relative overflow-hidden">
     
-    <!-- Hidden input to capture RFID without showing it -->
-    @if($isCapturing)
-        <input 
-            type="password" 
-            wire:model.live="BorrowRFID"
-            class="opacity-0 h-0 w-0 absolute -z-10 pointer-events-none"
-            id="rfidInput"
-            autofocus
-        />
-    @endif
+
     
     <!-- RFID Capture Modal -->
     <x-modal wire:model="BorrowModal" title="RFID Authentication" persistent separator>
@@ -27,6 +18,16 @@
             <div class="flex justify-center items-center p-6">
                 <x-loading class="loading-infinity text-primary" size="lg" />
             </div>
+                <!-- Hidden input to capture RFID without showing it -->
+            @if($isCapturing)
+                <input 
+                    type="password" 
+                    wire:model.live="BorrowRFID"
+                    class="opacity-0 h-0 w-0 absolute -z-10 pointer-events-none"
+                    id="rfidInput"
+                    autofocus
+                />
+            @endif
             
             @if($isCapturing)
                 <!-- Visual indicator of RFID input (masked) -->
