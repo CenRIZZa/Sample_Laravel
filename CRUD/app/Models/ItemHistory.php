@@ -33,5 +33,7 @@ class ItemHistory extends Model
     {
         return $this->belongsTo(facList::class, 'fac_id');
     }
+
+    
 }
 

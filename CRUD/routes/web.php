@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB; 
 use App\Livewire\ItemForm;
 use App\Livewire\ItemView;
-
+use App\Livewire\ViewTransac;
 
 Route::get('/home', function () {
     return view('users');
@@ -49,3 +49,7 @@ Route::get('/add', function () {
 Route::get('/borrow/{userId}', function ($userId) {
     return view('borrow', ['userId' => $userId]);
 })->name('borrow');
+
+Route::get('/return/{userId}', function ($userId) {
+    return view('transactions', ['userId' => $userId]);
+})->name('return');

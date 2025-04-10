@@ -88,7 +88,7 @@
             label="Borrow Item" 
             class="btn-primary text-2xl py-10 px-16 w-full sm:w-80 h-auto transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
             right-icon="o-chevron-right"
-            wire:click="startCapture"
+            wire:click="startBorrow"
             />
             
             <!-- Receive button with hover effects -->
@@ -97,7 +97,7 @@
                 label="Return Item" 
                 class="btn-accent text-2xl py-10 px-16 w-full sm:w-80 h-auto transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
                 right-icon="o-chevron-right"
-                link=""
+                wire:click="startReturn"
             />
         </div>
 
@@ -122,3 +122,14 @@
 
     
 </div>
+
+
+
+<script>
+    setTimeout(function() {
+        var successMessage = document.getElementById('success-message');
+        if (successMessage) {
+            successMessage.style.display = 'none'; 
+        }
+    }, 6000); 
+</script>
