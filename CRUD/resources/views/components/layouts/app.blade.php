@@ -30,35 +30,25 @@
             {{-- BRAND --}}
             <x-app-brand class="px-5 pt-4" />
 
-                        {{-- MENU --}}
+            {{-- MENU --}}
             <x-menu activate-by-route>
-            
+
                 {{-- User --}}
                 @if($user = auth()->user())
                     <x-menu-separator />
-            
+
                     <x-list-item :item="$user" value="name" sub-value="email" no-separator no-hover class="-mx-2 !-my-2 rounded">
                         <x-slot:actions>
-                            <form id="logout-form" method="POST" action="{{ route('admin.logout') }}" class="hidden">
-                                @csrf
-                            </form>
-                            <x-button 
-                                icon="o-power" 
-                                class="btn-circle btn-ghost btn-xs" 
-                                tooltip-left="logoff" 
-                                onclick="document.getElementById('logout-form').submit()"
-                            />
+                            <x-button icon="o-power" class="btn-circle btn-ghost btn-xs" tooltip-left="logoff" no-wire-navigate link="/logout" />
                         </x-slot:actions>
                     </x-list-item>
-            
+
                     <x-menu-separator />
                 @endif
-                
-                <x-menu-item title="Items List" icon="o-clipboard-document-list" link="{{ route('crud.index') }}" />
-                
-                <x-menu-item title="Add New Item" icon="o-plus-circle" link="{{ route('crud.form') }}" />
-            
-                <x-menu-item title="Register Admin" icon="o-user-plus" link="{{ route('crud.register') }}" />
+
+                <x-menu-item title="View Items" icon="o-sparkles" link="/fetch" />
+                <x-menu-item title="View History" icon="o-sparkles" link="" />
+                <x-menu-item title="Create Item" icon="o-sparkles" link="/form" />
                 
                 <x-menu-sub title="Settings" icon="o-cog-6-tooth">
                     <x-menu-item title="Wifi" icon="o-wifi" link="####" />

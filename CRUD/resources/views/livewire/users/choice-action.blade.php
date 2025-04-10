@@ -1,5 +1,12 @@
 <div class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 to-indigo-100 p-8 relative overflow-hidden">
-    
+    @if (session('success'))
+    <div id="success-message" class="mb-6 transition-opacity duration-500 ease-in-out opacity-100">
+        <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-md relative" role="alert">
+            <strong class="font-bold">Success!</strong>
+            <span class="block sm:inline ml-2">{{ session('success') }}</span>
+        </div>
+    </div>
+    @endif
 
     
     <!-- RFID Capture Modal -->

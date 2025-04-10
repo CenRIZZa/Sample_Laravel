@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB; 
 use App\Livewire\ItemForm;
 use App\Livewire\ItemView;
-use Livewire\Volt\Volt;
+
 
 Route::get('/home', function () {
     return view('users');
-});
+})->name('home');
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,8 +33,10 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/form', ItemForm::class)->name('crud.form');
     Route::get('/fetch', ItemView::class)->name('crud.index');
     Route::get('/item/edit/{id}', ItemForm::class)->name('crud.edit');
-    Route::get('/register', AccountRegister::class)->name('crud.register');
+    
 });
+
+Route::get('/register', AccountRegister::class)->name('crud.register');
 
 Route::get('/add', function () {
     return view('crud.create');

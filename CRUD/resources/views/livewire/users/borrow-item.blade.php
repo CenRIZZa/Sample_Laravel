@@ -1,34 +1,100 @@
-<div class="p-6 bg-white rounded-lg shadow-lg">
-    <x-form wire:submit="save2">
-        <x-input label="Name" wire:model="name" />
+<div class="max-w-4xl mx-auto">
 
-        <x-input label="Address" wire:model="address" />
-     
-        <x-input label="Number" wire:model="number" omit-error hint="This is required, but we suppress the error message" />
-     
-        <x-slot:actions>
-            <x-button label="Click me!" class="btn-primary" type="submit" spinner="save2" />
-        </x-slot:actions>
 
-        <x-select
-            label="items"
-            wire:model="selectedUser2"
-            :options="$items"
-            placeholder="Select a user"
-            placeholder-value="0" {{-- Set a value for placeholder. Default is `null` --}}
-        />
+    <!-- Header Section -->
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-primary">Borrow Items</h1>
+        @if($user)
+        <div class="mt-2 p-3 bg-base-200 rounded-lg">
+            <div class="flex items-center gap-3">
+                
+                <div>
+                    <p class="font-medium"> User: {{ $user->name }}</p>
+                    @if(isset($user->email))
+                    <p class="text-sm opacity-70">Email: {{ $user->email }}</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+        @endif
+    </div>
 
-            <x-select 
-                label="Master user" 
-                wire:model="selectedUser" 
-                :options="$faculty" 
-                option-label="faculty_name" {{-- Specify the label key --}}
-                placeholder="Select a user"
-                option-value="id" {{-- Specify the value key --}}
-                icon="o-user" 
-            />
-    </x-form>   
+    <!-- Borrowing Form -->
+    <div class="bg-base-100 rounded-box shadow-xl p-6">
+        <x-form wire:submit="saveBorrow" method="POST">
+        @csrf
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- User information -->
+                <div>
+                    <h2 class="text-lg font-medium mb-3">Borrower Information</h2>
+                    
+                    <div class="mt-4">
+                        <x-input 
+                            type="time" 
+                            label="Return Time" 
+                            wire:model="returnTime" 
+                            icon="o-calendar"
+                            hint="When will the item be returned?"
+                        />
+                    </div>
+                </div>
+                
+                <!-- Item selection -->
+                <div>
+                    <h2 class="text-lg font-medium mb-3">Item Selection</h2>
+                    
+                    <x-select 
+                        label="Faculty" 
+                        wire:model="facID" 
+                        :options="$faculty" 
+                        option-label="faculty_name"
+                        placeholder="Select your professor"
+                        option-value="id"
+                        icon="o-academic-cap" 
+                        hint="Select professor"
+                    />
+                    
+                    
 
-    <h1>{{ json_encode($faculty) }}</h1> {{-- Debugging: Display the $faculty array --}}
+
+                    <div class="mt-4">
+                        <x-select
+                            label="Select Item to Borrow"
+                            wire:model="itemID"
+                            :options="$items"
+                            option-label="name"
+                            option-value="id"
+                            placeholder="Choose an item"
+                            placeholder-value="0"
+                            icon="o-cube"
+                            hint="Available items for borrowing"
+                        />
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="divider my-6"></div>
+            
+            <x-slot:actions>
+                <div class="flex justify-between items-center w-full">
+                    <x-button 
+                        label="Cancel" 
+                        class="btn-ghost" 
+                        type="button"
+                    />
+                    <x-button 
+                        label="Borrow Item" 
+                        class="btn-primary" 
+                        type="submit" 
+                        icon="o-arrow-right" 
+                        spinner="save2"
+                    />
+                </div>
+            </x-slot:actions>
+        </x-form>
+    </div>
     
+   
 </div>

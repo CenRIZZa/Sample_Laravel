@@ -8,6 +8,7 @@ use App\Models\facList;
 
 class ItemHistory extends Model
 {
+    protected $table = 'itemhistory';
     protected $fillable = [
         'user_id',
         'item_id',
@@ -16,6 +17,7 @@ class ItemHistory extends Model
         'is_returned',
         'returned_at',
         'fac_id',
+        'returnTime',
     ];
     
     public function user()

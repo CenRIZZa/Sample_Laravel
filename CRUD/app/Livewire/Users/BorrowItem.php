@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Livewire\Component;
 use App\Models\User;
 use App\Models\items;
+use App\Models\ItemHistory;
 use App\Models\facList;
 class BorrowItem extends Component
 {
@@ -13,10 +14,17 @@ class BorrowItem extends Component
     public $items;
     public $faculty;
     public $selectedFaculty = null;
+
+
+    public $facID;
+    public $itemID;
+    public $returnTime;
     
     public function mount($userId = null)
-    {
+    {   
+        
         $this->items = items::all();
+        
         $this->faculty = facList::all()->map(function ($faculty) {
             return [
                 'id' => $faculty->id,
@@ -36,15 +44,36 @@ class BorrowItem extends Component
         return view('livewire.users.borrow-item');
     }
 
-    public function saveBorrow(Request $request){
-        $data = $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'quantity' => 'required|integer',
-            'is_available' => 'required|boolean',
-
+    public function saveBorrow(){
+        $this->validate([
+            'itemID' => 'required',
+            'facID' => 'required',
+            'returnTime' => 'required',
         ]);
 
-        $newItem  = items::create($data);
+        try{
+
+            ItemHistory::create([
+                'user_id' => $this->userId,
+                'item_id' => $this->itemID,
+                'is_borrowed' => true,
+                'borrowed_at' => now(),
+                'is_returned' => false,
+                'returned_at' => null,
+                'fac_id' => $this->facID,
+                'returnTime' => $this->returnTime,
+            ]);
+            $this->reset(['itemID', 'facID', 'returnTime']);
+            session()->flash('success', 'Item borrowed successfully!');
+            return redirect()->route('home');
+            
+
+
+        }
+        catch (\Exception $e) {
+            session()->flash('error', 'Error: ' . $e->getMessage());
+        }
+     
+
     }
 }
