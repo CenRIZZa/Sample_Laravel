@@ -13,6 +13,7 @@ class Items extends Model // Corrected class name casing
         'description',
         'quantity',
         'is_available',
+        'BorrowCount',
     ];
 
     // Add this method inside the Items class

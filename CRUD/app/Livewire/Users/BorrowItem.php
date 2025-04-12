@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\items;
 use App\Models\ItemHistory;
 use App\Models\facList;
+use Illuminate\Support\Facades\DB;
+
 class BorrowItem extends Component
 {
     public $userId;
@@ -51,7 +53,8 @@ class BorrowItem extends Component
             'returnTime' => 'required',
         ]);
 
-        try{
+        try {
+            DB::beginTransaction();
 
             ItemHistory::create([
                 'user_id' => $this->userId,
@@ -63,17 +66,18 @@ class BorrowItem extends Component
                 'fac_id' => $this->facID,
                 'returnTime' => $this->returnTime,
             ]);
+
+            $item = Items::findOrFail($this->itemID);
+            $item->increment('BorrowCount', 1);
+
+            DB::commit();
+
             $this->reset(['itemID', 'facID', 'returnTime']);
             session()->flash('success', 'Item borrowed successfully!');
             return redirect()->route('home');
-            
-
-
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
+            DB::rollBack();
             session()->flash('error', 'Error: ' . $e->getMessage());
         }
-     
-
     }
 }

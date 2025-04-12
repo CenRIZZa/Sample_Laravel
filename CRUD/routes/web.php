@@ -33,10 +33,12 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/form', ItemForm::class)->name('crud.form');
     Route::get('/fetch', ItemView::class)->name('crud.index');
     Route::get('/item/edit/{id}', ItemForm::class)->name('crud.edit');
+    Route::get('/logs', ViewTransac::class)->name('crud.logs');
+    Route::get('/register', AccountRegister::class)->name('crud.register');
     
 });
 
-Route::get('/register', AccountRegister::class)->name('crud.register');
+
 
 Route::get('/add', function () {
     return view('crud.create');

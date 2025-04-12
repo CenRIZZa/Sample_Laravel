@@ -1,69 +1,126 @@
-<div>
+<div class="p-6">
     <div class="max-w-full mx-auto">
         <div class="flex justify-between items-center mb-8">
             <div>
-                <h2 class="text-3xl font-bold text-gray-900">Available Items</h2>
-                <p class="mt-2 text-gray-600">Manage your inventory items</p>
+                <h2 class="text-3xl font-bold text-primary">Available Items</h2>
+                <p class="mt-2 text-base-content/70">Manage your inventory items</p>
             </div>
-
+            
+            <button class="btn btn-primary" onclick="window.location.href='{{ route('crud.form') }}'">
+                <x-icon name="o-plus" class="w-5 h-5 mr-2" />
+                Add New Item
+            </button>
         </div>
         
         @if (session('success'))
-        <div id="success-message" class="mb-6 transition-opacity duration-500 ease-in-out opacity-100">
-            <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-md relative" role="alert">
-                <strong class="font-bold">Success!</strong>
-                <span class="block sm:inline ml-2">{{ session('success') }}</span>
+        <div id="success-message" class="alert alert-success mb-6">
+            <div class="flex">
+                <x-icon name="o-check-circle" class="w-5 h-5 mr-2" />
+                <span>{{ session('success') }}</span>
             </div>
         </div>
         @endif
 
         @if ($message)
-        <div id="message" class="mb-6">
-            <div class="bg-blue-100 border border-blue-400 text-blue-700 px-6 py-4 rounded-md relative" role="alert">
-                <strong class="font-bold">Info:</strong>
-                <span class="block sm:inline ml-2">{{ $message }}</span>
+        <div id="message" class="alert alert-info mb-6">
+            <div class="flex">
+                <x-icon name="o-information-circle" class="w-5 h-5 mr-2" />
+                <span>{{ $message }}</span>
             </div>
         </div>
         @endif
 
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="card bg-base-100 shadow-xl overflow-hidden">
+            <!---Start of modal --->
+            <x-modal wire:model="myModal3" title="Edit Item" subtitle="Update item information">
+                <x-form no-separator>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Name</span>
+                        </label>
+                        <input wire:model='name' type="text" name="name" class="input input-bordered w-full"  required />
+                    </div>
+    
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Description</span>
+                        </label>
+                        <textarea wire:model='description' name="description" rows="5" class="textarea textarea-bordered w-full"></textarea>
+                    </div>
+    
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Quantity</span>
+                        </label>
+                        <input wire:model='quantity' type="number" name="quantity" min="0" class="input input-bordered w-full" required />
+                    </div>
+    
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium">Availability Status</span>
+                        </label>
+                        <select wire:model='is_available' name="is_available" class="select select-bordered w-full">
+                            <option value="1">Available</option>
+                            <option value="0">Not Available</option>
+                        </select>
+                    </div>
+                    
+                    <x-slot:actions>
+                        <x-button label="Cancel" @click="$wire.myModal3 = false" class="btn-outline" />
+                        <x-button label="Save Changes" class="btn-primary" wire:click="updateItem" />
+                    </x-slot:actions>
+                </x-form>
+            </x-modal>
+            <!---End of modal --->
+            
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+                <table class="table table-zebra w-full">
+                    <thead>
                         <tr>
-                            <th scope="col" class="px-8 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Name</th>
-                            <th scope="col" class="px-8 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Description</th>
-                            <th scope="col" class="px-8 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Quantity</th>
-                            <th scope="col" class="px-8 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                            <th scope="col" class="px-8 py-4 text-right text-sm font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                            <th class="bg-base-200 text-base-content font-bold">Name</th>
+                            <th class="bg-base-200 text-base-content font-bold">Description</th>
+                            <th class="bg-base-200 text-base-content font-bold">Quantity</th>
+                            <th class="bg-base-200 text-base-content font-bold">Status</th>
+                            <th class="bg-base-200 text-base-content font-bold text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody>
                         @foreach ($items as $item)
-                        <tr wire:key = '{{$item->id}}' wire:transition class="hover:bg-gray-50 transition-colors duration-200">
-                            <td class="px-8 py-5 whitespace-nowrap text-base font-medium text-gray-900">
+                        <tr wire:key='{{$item->id}}' wire:transition class="hover">
+                            <td class="font-medium">
                                 {{ $item->name }}
                             </td>
-                            <td class="px-8 py-5 text-base text-gray-500">
+                            <td>
                                 {{ $item->description }}
                             </td>
-                            <td class="px-8 py-5 whitespace-nowrap text-base text-gray-500">
+                            <td>
                                 {{ $item->quantity }}
                             </td>
-                            <td class="px-8 py-5 whitespace-nowrap">
-                                <span class="px-4 py-2 inline-flex text-sm leading-5 font-semibold rounded-full 
-                                    {{ $item->is_available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ $item->is_available ? 'Available' : 'Not Available' }}
+                            <td>
+                                <span class="badge {{ $item->is_available ? 'badge-success' : 'badge-error' }} gap-1">
+                                    @if($item->is_available)
+                                        <x-icon name="o-check-circle" class="w-4 h-4" />
+                                        Available
+                                    @else
+                                        <x-icon name="o-x-circle" class="w-4 h-4" />
+                                        Not Available
+                                    @endif
                                 </span>
                             </td>
-                            <td class="px-8 py-5 whitespace-nowrap text-right text-sm font-medium">
-                                <div class="flex justify-end space-x-3">
-                                    <a href="{{ route('crud.edit', $item->id) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md">
+                            <td class="text-right">
+                                <div class="flex justify-end space-x-2">
+                                    <a href="{{ route('crud.edit', $item->id) }}" class="btn btn-sm btn-outline btn-info">
+                                        <x-icon name="o-pencil-square" class="w-4 h-4" />
                                         Edit
                                     </a>
+                                    <button wire:click="editItem({{ $item->id }})" class="btn btn-sm btn-primary">
+                                        <x-icon name="o-pencil" class="w-4 h-4 mr-1" />
+                                        Modal Edit
+                                    </button>
                                     <button wire:click="delete({{ $item->id }})" 
                                         wire:confirm="Are you sure you want to delete this item?"
-                                        class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md">
+                                        class="btn btn-sm btn-error">
+                                        <x-icon name="o-trash" class="w-4 h-4" />
                                         Delete
                                     </button>
                                 </div>
@@ -73,6 +130,20 @@
                     </tbody>
                 </table>
             </div>
+            
+            @if(count($items) == 0)
+            <div class="p-12 text-center">
+                <div class="inline-flex rounded-full bg-base-200 p-4 mb-4">
+                    <x-icon name="o-archive-box" class="w-8 h-8 text-base-content/70" />
+                </div>
+                <h3 class="text-lg font-semibold">No items found</h3>
+                <p class="text-base-content/70 mt-2">Start by adding some items to your inventory</p>
+                <button onclick="window.location.href='{{ route('crud.form') }}'" class="btn btn-primary mt-4">
+                    <x-icon name="o-plus" class="w-5 h-5 mr-2" />
+                    Add First Item
+                </button>
+            </div>
+            @endif
         </div>
     </div>
 </div>

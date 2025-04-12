@@ -1,4 +1,13 @@
 <div class="max-w-6xl mx-auto p-6 bg-base-100 rounded-box shadow-lg">
+    @if (session('success'))
+    <div id="success-message" class="mb-6 transition-opacity duration-500 ease-in-out opacity-100">
+        <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-md relative" role="alert">
+            <strong class="font-bold">Success!</strong>
+            <span class="block sm:inline ml-2">{{ session('success') }}</span>
+        </div>
+    </div>
+    @endif
+
     <h1 class="text-2xl font-bold text-primary mb-4">Return Items</h1>
 
     @if($userId && count($itemHistories) > 0)
@@ -44,7 +53,7 @@
                             @if(!$history->is_returned)
                                 <button 
                                     class="btn btn-primary btn-sm"
-                                    wire:click="returnItem({{ $history->id }})"
+                                    wire:click="saveReturn({{ $history->id }})"
                                     wire:loading.attr="disabled"
                                 >
                                     Return Item

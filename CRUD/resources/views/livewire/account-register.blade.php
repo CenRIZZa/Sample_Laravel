@@ -1,99 +1,124 @@
-<div class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
-        
-        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Account Register</h2>
-        
-        <!-- Error messages -->
-        @if ($errors->any())
-            <div class="mb-4 bg-red-50 border-l-4 border-red-500 p-4">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <ul class="text-sm text-red-700">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
+<div class="flex justify-center items-center min-h-screen bg-base-200 p-6">
+    <div class="card w-full max-w-4xl bg-base-100 shadow-2xl overflow-hidden">
+        <!-- Header with solid blue background -->
+        <div class="bg-blue-600 text-white p-10 text-center">
+            
+            <p class="text-xl opacity-90">Inventory Management System</p>
+            <div class="mt-6 inline-block px-8 py-4 bg-white/20 rounded-lg">
+                <h2 class="text-3xl font-semibold">Account Registration</h2>
             </div>
-        @endif
+        </div>
         
-        <!-- Success message -->
-        @if (session()->has('message'))
-            <div class="mb-4 bg-green-50 border-l-4 border-green-500 p-4">
-                <div class="flex">
-                    <div class="ml-3">
-                        <p class="text-sm text-green-700">{{ session('message') }}</p>
+        <div class="p-12">
+            <!-- Error messages -->
+            @if ($errors->any())
+                <div class="alert alert-error mb-10 shadow-lg p-6">
+                    <div class="flex">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-8 w-8" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <div>
+                            <ul class="list-disc list-inside text-lg ml-2">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endif
-        
-        <!-- Register Form -->
-        <form wire:submit.prevent="register" class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                <input 
-                    type="text" 
-                    wire:model="name"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                    placeholder="Enter your name"
-                    required
-                />
-                @error('name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-            </div>
+            @endif
+            
+            <!-- Success message -->
+            @if (session()->has('message'))
+                <div class="alert alert-success mb-10 shadow-lg p-6">
+                    <div class="flex">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-8 w-8" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        <p class="text-lg ml-2">{{ session('message') }}</p>
+                    </div>
+                </div>
+            @endif
+            
+            <!-- Register Form -->
+            <form wire:submit.prevent="register" class="space-y-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium text-lg">Full Name</span>
+                            <span class="label-text-alt text-error text-base">Required</span>
+                        </label>
+                        <div class="flex relative">
+                            <div class="bg-gray-100 border-y border-l border-gray-300 rounded-l-lg flex items-center justify-center px-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
+                            <input type="text" wire:model="name" placeholder="Enter your full name" 
+                                class="input input-bordered rounded-l-none flex-1 h-14 text-lg @error('name') input-error @enderror" required />
+                        </div>
+                        @error('name') <span class="text-error text-base mt-2">{{ $message }}</span> @enderror
+                    </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input 
-                    type="email" 
-                    wire:model="email"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                    placeholder="Enter your email"
-                    required
-                />
-                @error('email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-            </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium text-lg">Email Address</span>
+                            <span class="label-text-alt text-error text-base">Required</span>
+                        </label>
+                        <div class="flex relative">
+                            <div class="bg-gray-100 border-y border-l border-gray-300 rounded-l-lg flex items-center justify-center px-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <input type="email" wire:model="email" placeholder="your.email@example.com" 
+                                class="input input-bordered rounded-l-none flex-1 h-14 text-lg @error('email') input-error @enderror" required />
+                        </div>
+                        @error('email') <span class="text-error text-base mt-2">{{ $message }}</span> @enderror
+                    </div>
+                </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                <input 
-                    type="password" 
-                    wire:model="password"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                    placeholder="••••••••"
-                    required
-                />
-                @error('password') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-            </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium text-lg">Password</span>
+                            <span class="label-text-alt text-error text-base">Required</span>
+                        </label>
+                        <div class="flex relative">
+                            <div class="bg-gray-100 border-y border-l border-gray-300 rounded-l-lg flex items-center justify-center px-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <input type="password" wire:model="password" placeholder="••••••••" 
+                                class="input input-bordered rounded-l-none flex-1 h-14 text-lg @error('password') input-error @enderror" required />
+                        </div>
+                        @error('password') <span class="text-error text-base mt-2">{{ $message }}</span> @enderror
+                    </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
-                <input 
-                    type="password" 
-                    wire:model="password_confirmation"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                    placeholder="••••••••"
-                    required
-                />
-            </div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium text-lg">Confirm Password</span>
+                            <span class="label-text-alt text-error text-base">Required</span>
+                        </label>
+                        <div class="flex relative">
+                            <div class="bg-gray-100 border-y border-l border-gray-300 rounded-l-lg flex items-center justify-center px-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <input type="password" wire:model="password_confirmation" placeholder="••••••••" 
+                                class="input input-bordered rounded-l-none flex-1 h-14 text-lg" required />
+                        </div>
+                    </div>
+                </div>
 
-            <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-2.5 rounded-lg transition-all duration-300 transform hover:scale-[1.01]">
-                Register
-            </button>
-        </form>
 
-        <div class="mt-6 text-center text-sm text-gray-600">
-            <div class="flex items-center justify-center">
-                <span class="bg-gray-300 h-px flex-grow t-2 relative top-2"></span>
-                <span class="flex-shrink mx-4 text-gray-400">Secure Admin Access</span>
-                <span class="bg-gray-300 h-px flex-grow t-2 relative top-2"></span>
-            </div>
+                <button type="submit" class="btn btn-primary w-full text-xl h-16 mt-10">
+                    <span>Create Account</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </form>
+            
+
         </div>
     </div>
 </div>

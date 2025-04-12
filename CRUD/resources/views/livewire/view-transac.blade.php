@@ -1,6 +1,33 @@
 <div class="max-w-6xl mx-auto p-6 bg-base-100 rounded-box shadow-lg">
     <h1 class="text-2xl font-bold text-primary mb-4">Item History</h1>
 
+    <!-- Filter Controls -->
+    <div class="mb-6">
+        <div class="flex items-center">
+            <span class="mr-3 font-medium">Filter by status:</span>
+            <div class="btn-group">
+                <button 
+                    class="btn btn-sm {{ $filterStatus === 'all' ? 'btn-primary' : 'btn-outline' }}" 
+                    wire:click="filter('all')"
+                >
+                    All Items
+                </button>
+                <button 
+                    class="btn btn-sm {{ $filterStatus === 'borrowed' ? 'btn-primary' : 'btn-outline' }}" 
+                    wire:click="filter('borrowed')"
+                >
+                    Borrowed
+                </button>
+                <button 
+                    class="btn btn-sm {{ $filterStatus === 'returned' ? 'btn-primary' : 'btn-outline' }}" 
+                    wire:click="filter('returned')"
+                >
+                    Returned
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="overflow-x-auto">
         <table class="table w-full">
             <thead>
@@ -33,7 +60,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center">No item history found.</td>
+                        <td colspan="7" class="text-center">No items found with the current filter.</td>
                     </tr>
                 @endforelse
             </tbody>

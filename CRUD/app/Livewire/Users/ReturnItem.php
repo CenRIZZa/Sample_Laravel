@@ -30,4 +30,29 @@ class ReturnItem extends Component
         
         return view('livewire.users.return-item'); // Fix view path
     }
+
+
+   
+    public function saveReturn($historyId)
+    {
+        try {
+            $history = ItemHistory::findOrFail($historyId);
+            
+            $history->update([
+                'is_returned' => true,
+                'returned_at' => now(),
+            ]);
+            
+            
+            if ($history->item) {
+                $history->item->update(['status' => 'available']);
+            }
+            
+            session()->flash('success', $history->item->name . ' returned successfully!');
+            return redirect()->route('return', [$this->userId]);
+        }
+        catch (\Exception $e) {
+            session()->flash('error', 'Error: ' . $e->getMessage());
+        }
+    }
 }

@@ -2,44 +2,48 @@
     <div class="card w-full max-w-md bg-base-100 shadow-xl p-8">
         <div class="text-center mb-6">
             <h1 class="text-3xl font-bold text-primary">CRUD App</h1>
+            <p class="text-base-content/70 mt-1">Inventory Management System</p>
         </div>
         
-        <h2 class="text-xl font-semibold text-neutral text-center mb-6">Administrator Login</h2>
+        <h2 class="text-xl font-semibold text-center mb-6">Administrator Login</h2>
         
         <!-- Alert message -->
         @if($errorMessage)
-        <div class="alert alert-error shadow-lg mb-4">
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+        <div class="alert alert-error mb-4">
+            <div class="flex items-center">
+                <x-icon name="o-x-circle" class="w-5 h-5 mr-2" />
                 <span>{{ $errorMessage }}</span>
             </div>
         </div>
         @endif
         
         <!-- Login Form -->
-        <form wire:submit.prevent="login" class="space-y-4">
+        <form wire:submit.prevent="login" class="space-y-6">
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text">Email</span>
+                    <span class="label-text font-medium">Email</span>
                 </label>
-                <input type="email" wire:model="email" placeholder="Enter your email" class="input input-bordered w-full" required />
-                @error('email') <span class="text-error text-xs">{{ $message }}</span> @enderror
+                <input type="email" wire:model="email" placeholder="Enter your email" 
+                    class="input input-bordered w-full bg-base-100" required />
+                @error('email') <span class="text-error text-xs mt-1">{{ $message }}</span> @enderror
             </div>
 
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text">Password</span>
+                    <span class="label-text font-medium">Password</span>
                 </label>
-                <input type="password" wire:model="password" placeholder="••••••••" class="input input-bordered w-full" required />
-                @error('password') <span class="text-error text-xs">{{ $message }}</span> @enderror
+                <input type="password" wire:model="password" placeholder="••••••••" 
+                    class="input input-bordered w-full bg-base-100" required />
+                @error('password') <span class="text-error text-xs mt-1">{{ $message }}</span> @enderror
             </div>
 
             <button type="submit" class="btn btn-primary w-full">Sign In</button>
         </form>
         
         <div class="divider my-6">Secure Admin Access</div>
+        
+        <div class="text-center text-sm text-base-content/70">
+            <a href="{{ route('crud.register') }}" class="link link-hover link-primary">Need an account? Register here</a>
+        </div>
     </div>
 </div>
-    
