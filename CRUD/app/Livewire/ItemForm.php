@@ -14,6 +14,13 @@ class ItemForm extends Component
     public $itemId = null;
     public $isEditing = false;
     
+    // Rules for validation
+    protected $rules = [
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string|max:1000',
+        'quantity' => 'required|integer|min:1',
+        'is_available' => 'boolean',
+    ];
 
     public function mount($id = null)
     {
@@ -35,34 +42,34 @@ class ItemForm extends Component
         }
     }
 
-    public function submit(){
+    public function submit()
+    {
         try {
-            
-            $this->validate([
-                'name' => 'required|string|max:255',
-                'description' => 'nullable|string|max:1000',
-                'quantity' => 'required|integer|min:1',
-                'is_available' => 'required|boolean',
-            ]); 
+            // Validate form data
+            $this->validate();
 
+            // Process form data
+            $itemData = [
+                'name' => $this->name,
+                'description' => $this->description,
+                'quantity' => $this->quantity,
+                'is_available' => (bool)$this->is_available,
+            ];
+            
             if ($this->isEditing) {
                 $item = items::find($this->itemId);
-                $item->update([
-                    'name' => $this->name,
-                    'description' => $this->description,
-                    'quantity' => $this->quantity,
-                    'is_available' => $this->is_available
-                ]);
+                if (!$item) {
+                    $this->addError('error', 'Item not found.');
+                    return;
+                }
                 
+                $item->update($itemData);
                 session()->flash('success', 'Item updated successfully!');
             } else {
-                items::create([
-                    'name' => $this->name,
-                    'description' => $this->description,
-                    'quantity' => $this->quantity,
-                    'is_available' => $this->is_available
-                ]);
+                // Add BorrowCount field only for new items
+                $itemData['BorrowCount'] = 0;
                 
+                items::create($itemData);
                 session()->flash('success', 'Item created successfully!');
             }
             
@@ -70,15 +77,8 @@ class ItemForm extends Component
             
             return redirect()->route('crud.index');
             
-        } catch (\Illuminate\Database\QueryException $e) {
-            if ($e->getCode() === '23000') {
-                $this->addError('error', 'This item already exists.');
-                return;
-            }
-            $this->addError('error', 'Error saving to database. Please try again.');
-            
         } catch (\Exception $e) {
-            $this->addError('error', 'An unexpected error occurred: ' . $e->getMessage());
+            $this->addError('error', 'Error saving item. Please try again.');
         }
     }
 

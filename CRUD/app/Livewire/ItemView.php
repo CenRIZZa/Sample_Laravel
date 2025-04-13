@@ -72,7 +72,7 @@ class ItemView extends Component
             $this->is_available = $item->is_available;
             $this->myModal3 = true;
     
-            // Refresh the items manually to avoid disappearing table
+    
             $this->refreshItems();
         } catch (\Exception $e) {
             session()->flash('error', 'Item not found.');

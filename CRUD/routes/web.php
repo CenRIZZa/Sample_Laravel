@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Livewire\ItemForm;
 use App\Livewire\ItemView;
 use App\Livewire\ViewTransac;
+use App\Livewire\Reports;
 
 Route::get('/home', function () {
     return view('users');
@@ -35,6 +36,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::get('/item/edit/{id}', ItemForm::class)->name('crud.edit');
     Route::get('/logs', ViewTransac::class)->name('crud.logs');
     Route::get('/register', AccountRegister::class)->name('crud.register');
+    Route::get('/reports', Reports::class)->name('crud.reports');
     
 });
 

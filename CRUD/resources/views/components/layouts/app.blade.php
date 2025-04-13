@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ isset($title) ? $title.' - '.config('app.name') : config('app.name') }}</title>
 
@@ -31,7 +31,7 @@
             <label for="main-drawer" class="lg:hidden me-3">
                 <x-icon name="o-bars-3" class="cursor-pointer h-6 w-6 text-gray-700" />
             </label>
-        </x-slot:actions>
+        </x-slot:actions> 
     </x-nav>
 
     {{-- MAIN --}}
@@ -62,6 +62,7 @@
                 </div>
 
                 <x-menu-item title="Create Admin" icon="o-user-plus" link="/register" class="menu-item-hover rounded-lg mb-1 py-2" active-class="sidebar-active" />
+                <x-menu-item title="Reports" icon="o-chart-bar" link="/reports" class="menu-item-hover rounded-lg mb-1 py-2" active-class="sidebar-active" />
                 
 
                 {{-- User --}}
@@ -75,7 +76,12 @@
                                     </div>
                                 </x-slot:avatar>
                                 <x-slot:actions>
-                                    <x-button icon="o-power" class="btn-circle btn-ghost btn-sm text-red-500" tooltip-left="Log out" no-wire-navigate link="/logout" />
+                                    <form method="POST" action="{{ route('admin.logout') }}" class="inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-circle btn-ghost btn-sm" title="Log out">
+                                            <x-icon name="o-power" class="h-5 w-5 text-red-500" />
+                                        </button>
+                                    </form>
                                 </x-slot:actions>
                             </x-list-item>
                         </div>
@@ -86,18 +92,21 @@
 
         {{-- The `$slot` goes here --}}
         <x-slot:content>
-            <div class="p-4 lg:p-6">
-                {{ $slot }}
+            <div class="flex flex-col min-h-[calc(100vh-64px)]">
+                <div class="flex-grow p-4 lg:p-6">
+                    {{ $slot }}
+                </div>
+                
+                <!-- Footer -->
+                <footer class="bg-white border-t border-gray-200 p-4 text-center text-sm text-gray-500 w-full">
+                    <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
+                </footer>
             </div>
-            
-            <!-- Footer -->
-            <footer class="bg-white border-t border-gray-200 p-4 text-center text-sm text-gray-500 mt-auto">
-                <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
-            </footer>
         </x-slot:content>
     </x-main>
 
     {{--  TOAST area --}}
     <x-toast position="bottom-right" />
+@stack('scripts')
 </body>
 </html>
